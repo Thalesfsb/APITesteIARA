@@ -22,19 +22,22 @@ namespace ProjetoTesteIara.Infrastructure.Mappings
                 .ValueGeneratedOnAdd();
 
             builder.Property(p => p.Descricao)
-                .HasColumnName("Descricao");
-
-            builder.Property(p => p.Marca)
-                .HasColumnName("Marca");
+                .HasColumnName("Descricao")
+                .IsRequired();
 
             builder.Property(p => p.NumeroItem)
-                .HasColumnName("NumeroItem");
+                .HasColumnName("NumeroItem")
+                .IsRequired();
 
             builder.Property(p => p.Preco)
                 .HasColumnName("Preco");
 
             builder.Property(p => p.Quantidade)
-                .HasColumnName("Quantidade");
+                .HasColumnName("Quantidade")
+                .IsRequired();
+
+            builder.Property(p => p.Marca)
+                .HasColumnName("Marca");
 
             builder.Property(p => p.Unidade)
                 .HasColumnName("Unidade");

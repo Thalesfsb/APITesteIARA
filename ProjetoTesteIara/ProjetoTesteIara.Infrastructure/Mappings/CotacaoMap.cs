@@ -18,37 +18,43 @@ namespace ProjetoTesteIara.Infrastructure.Mappings
 
             builder.Property(p => p.NumeroCotacao)
                 .HasColumnName("NumeroCotacao")
-                .ValueGeneratedOnAdd();
+                .ValueGeneratedOnAdd()
+                .IsRequired();
 
             builder.Property(p => p.CNPJComprador)
-                .HasColumnName("CNPJComprador");
+                .HasColumnName("CNPJComprador")
+                .IsRequired();
 
             builder.Property(p => p.CNPJFornecedor)
-                .HasColumnName("CNPJFornecedor");
+                .HasColumnName("CNPJFornecedor")
+                .IsRequired();
 
             builder.Property(p => p.DataCotacao)
-                .HasColumnName("DataCotacao");
+                .HasColumnName("DataCotacao")
+                .IsRequired();
 
             builder.Property(p => p.DataEntregaCotacao)
-                .HasColumnName("DataEntregaCotacao");
+                .HasColumnName("DataEntregaCotacao")
+                .IsRequired();
 
-            builder.Property(p => p.Observacao)
-                .HasColumnName("Observacao");
+            builder.Property(p => p.CEP)
+                .HasColumnName("CEP")
+                .IsRequired();
 
             builder.Property(p => p.Logradouro)
-                .HasColumnName("Logradouro");
+            .HasColumnName("Logradouro");
+
+            builder.Property(p => p.Complemento)
+             .HasColumnName("Complemento");
+
+            builder.Property(p => p.Bairro)
+               .HasColumnName("Bairro");
 
             builder.Property(p => p.UF)
                 .HasColumnName("UF");
 
-            builder.Property(p => p.Bairro)
-                .HasColumnName("Bairro");
-
-            builder.Property(p => p.Complemento)
-                .HasColumnName("Complemento");
-
-            builder.Property(p => p.CEP)
-                .HasColumnName("CEP");
+            builder.Property(p => p.Observacao)
+                .HasColumnName("Observacao");
 
             builder.HasMany(fk => fk.CotacaoItems)
                 .WithOne(fk => fk.CotacaoEntity)

@@ -36,8 +36,7 @@ namespace ProjetoTesteIara
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjetoTesteIara", Version = "v1" });
             });
 
-            services
-               .AddDbContext<DbContextCotacao>(s => s.UseSqlServer(Configuration.GetConnectionString("DBCONTEXTIARA")));
+            services.AddDbContext<DbContextCotacao>(s => s.UseSqlServer(Configuration.GetConnectionString("DBCONTEXTIARA")));
 
             services.AddTransient<ICotacaoItemEntity, CotacaoItemEntity>();
             services.AddTransient<ICotacaoEntity, CotacaoEntity>();
@@ -47,6 +46,9 @@ namespace ProjetoTesteIara
             MapperConfiguration mapper = new MapperConfiguration(config => {
                 config.CreateMap<CotacaoModel, CotacaoEntity>();
                 config.CreateMap<CotacaoItemModel, CotacaoItemEntity>();
+                config.CreateMap<CotacaoEntity, CotacaoModel>();
+                config.CreateMap<CotacaoItemEntity, CotacaoItemModel>();
+                config.CreateMap<CotacaoUpdateModel, CotacaoEntity>();
             });
 
             IMapper _mapper = mapper.CreateMapper();
@@ -68,8 +70,7 @@ namespace ProjetoTesteIara
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseEndpoints(endpoints =>{
                 endpoints.MapControllers();
             });
         }

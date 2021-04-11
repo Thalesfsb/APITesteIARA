@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjetoTesteIara.Models
 {
-    public class CotacaoModel
+    public class CotacaoUpdateModel
     {
         [Required]
         public string CNPJComprador { get; set; }
@@ -23,6 +25,5 @@ namespace ProjetoTesteIara.Models
         public string Bairro { get; set; }
         public string UF { get; set; }
         public string Observacao { get; set; }
-        public ICollection<CotacaoItemModel> CotacaoItems { get; set; }
     }
 }
