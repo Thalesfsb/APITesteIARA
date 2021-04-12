@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoTesteIara.Models
 {
-    public class CotacaoItemUpdModel
+    public class CotacaoItemModel2
     {
         public int NumeroCotacaoItem { get; set; }
         [Required]
