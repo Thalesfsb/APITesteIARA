@@ -1,12 +1,12 @@
 # API DE COTAÇÃO
 
 Tecnologias e Frameworks utilizados para desenolver a API 
-  > C#
-  > SQL Server 2019
-  > .NET Core WebApi 5.0
-  > Entity FrameworkCore 5.0.5
-  > Entity FrameworkCore Relatioal 5.0.5
-  > Entity FrameworkCore SqlServer 5.0.5
+  > C#,
+  > SQL Server 2019,
+  > .NET Core WebApi 5.0,
+  > Entity FrameworkCore 5.0.5,
+  > Entity FrameworkCore Relatioal 5.0.5,
+  > Entity FrameworkCore SqlServer 5.0.5,
   > AutoMapper
 
 Para rodar o projeto local é necessário criar uma base de dados no SQL Server, trocar a Connectionstring do projeto em:
