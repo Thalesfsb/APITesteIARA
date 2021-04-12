@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProjetoTesteIara.Domain.Interfaces.Repositories
 {
-    public interface ICotacaoItemRepository
+    public interface ICotacaoItemRepository : IRepository<CotacaoItemEntity>
     {
         Task<IList<CotacaoItemEntity>> SelectAll();
-        Task<CotacaoItemEntity> Select(int id);
-        Task<int> Insert(CotacaoItemEntity cotacaoItemEntity);
-        Task<CotacaoItemEntity> Update(CotacaoItemEntity cotacaoItemEntity);
         Task<bool> Delete(int id);
     }
 }

@@ -8,6 +8,7 @@ namespace ProjetoTesteIara.Domain.Interfaces.Entities
 {
     public interface ICotacaoItemEntity
     {
+        int NumeroCotacaoItem { get; set; }
         int NumeroCotacao { get; set; }
         string Descricao { get; set; }
         int NumeroItem { get; set; }

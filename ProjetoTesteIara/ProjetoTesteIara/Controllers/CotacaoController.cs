@@ -17,15 +17,13 @@ namespace ProjetoTesteIara.Controllers
     [Route("[controller]")]
     public class CotacaoController : ControllerBase
     {
-        private readonly ICotacaoItemRepository _cotacaoItemRepository;
         private readonly ICotacaoRepository _cotacaoRepository;
         private readonly IMapper _mapper;
         private CotacaoEntity cotacaoEntity = null;
         private List<CotacaoEntity> cotacaoEntities = null;
-        public CotacaoController(IMapper mapper, ICotacaoItemRepository cotacaoItemRepository, ICotacaoRepository cotacaoRepository)
+        public CotacaoController(IMapper mapper, ICotacaoRepository cotacaoRepository)
         {
             _mapper = mapper;
-            _cotacaoItemRepository = cotacaoItemRepository;
             _cotacaoRepository = cotacaoRepository;
         }
 
@@ -92,7 +90,6 @@ namespace ProjetoTesteIara.Controllers
                 }
 
                 _mapper.Map(cotacaoModel, cotacaoEntity);
-
                 return Ok(await _cotacaoRepository.Insert(cotacaoEntity));
 
             }

@@ -1,8 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjetoTesteIara.Models
 {
-    public class CotacaoItemModel
+    public class CotacaoItemUpdModel
     {
         public int NumeroCotacaoItem { get; set; }
         [Required]
@@ -15,6 +19,5 @@ namespace ProjetoTesteIara.Models
         public string Marca { get; set; }
         public string Unidade { get; set; }
         public int NumeroCotacao { get; set; }
-        public CotacaoModel Cotacao { get; set; }
     }
 }

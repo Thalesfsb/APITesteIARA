@@ -10,6 +10,7 @@ namespace ProjetoTesteIara.Domain.Entities
 {
     public class CotacaoItemEntity : ICotacaoItemEntity
     {
+        public int NumeroCotacaoItem { get; set; }
         public string Descricao { get; set; }
         public int NumeroItem { get; set; }
         public decimal Preco { get; set; }

@@ -15,11 +15,15 @@ namespace ProjetoTesteIara.Infrastructure.Mappings
         public void Configure(EntityTypeBuilder<CotacaoItemEntity> builder)
         {
             builder.ToTable("CotacaoItem");
-            builder.HasKey(k => k.NumeroCotacao);
+            builder.HasKey(k => k.NumeroCotacaoItem);
+
+            builder.Property(p => p.NumeroCotacaoItem)
+                .HasColumnName("NumeroCotacaoItem")
+                .ValueGeneratedOnAdd()
+                .IsRequired();
 
             builder.Property(p => p.NumeroCotacao)
-                .HasColumnName("NumeroCotacao")
-                .ValueGeneratedOnAdd();
+                .HasColumnName("NumeroCotacao");
 
             builder.Property(p => p.Descricao)
                 .HasColumnName("Descricao")
