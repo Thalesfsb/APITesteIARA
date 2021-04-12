@@ -38,10 +38,10 @@ namespace ProjetoTesteIara.Controllers
                 cotacaoEntities = new List<CotacaoEntity>();
                 cotacaoEntities = (List<CotacaoEntity>)await _cotacaoRepository.SelectAll();
 
-                if (cotacaoEntities != null)
-                    return Ok(_mapper.Map<List<CotacaoModel>>(cotacaoEntities));
+                if (cotacaoEntities == null)
+                    return StatusCode(404);
                 else
-                    return StatusCode(400);
+                    return Ok(_mapper.Map<List<CotacaoModel>>(cotacaoEntities));
             }
             catch (Exception ex)
             {
@@ -57,10 +57,10 @@ namespace ProjetoTesteIara.Controllers
                 cotacaoEntity = new CotacaoEntity();
                 cotacaoEntity = await _cotacaoRepository.Select(id);
 
-                if (cotacaoEntity != null)
-                    return Ok(_mapper.Map<CotacaoModel>(cotacaoEntity));
+                if (cotacaoEntity == null)
+                    return StatusCode(404);
                 else
-                    return StatusCode(400);
+                    return Ok(_mapper.Map<CotacaoModel>(cotacaoEntity));
             }
             catch (Exception ex)
             {
@@ -110,12 +110,29 @@ namespace ProjetoTesteIara.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest();
 
+                if (cotacaoUpdateModel.NumeroCotacao == 0)
+                    return BadRequest();
+
+                if (cotacaoUpdateModel.Logradouro == "" && cotacaoUpdateModel.Bairro == "" && cotacaoUpdateModel.UF == "")
+                {
+                    ViaCepResponseModel viaCepResponse = new ViaCepResponseModel();
+                    ViaCepResponseModel endereco = await viaCepResponse.ViaCepResponse(cotacaoUpdateModel.CEP);
+
+                    if (endereco == null)
+                        return StatusCode(404);
+
+                    cotacaoUpdateModel.Logradouro = endereco.Logradouro;
+                    cotacaoUpdateModel.Bairro = endereco.Bairro;
+                    cotacaoUpdateModel.UF = endereco.Uf;
+                }
+
                 var cotacaoEntity = await _cotacaoRepository.Select(cotacaoUpdateModel.NumeroCotacao);
 
                 if (cotacaoEntity == null)
                     return StatusCode(404);
 
                 _mapper.Map(cotacaoUpdateModel, cotacaoEntity);
+
                 return Ok(await _cotacaoRepository.Update(cotacaoEntity));
             }
             catch (Exception ex)
