@@ -1,4 +1,5 @@
-﻿using ProjetoTesteIara.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjetoTesteIara.Domain.Entities;
 using ProjetoTesteIara.Domain.Interfaces.Repositories;
 using ProjetoTesteIara.Infrastructure.Contexts;
 using System;
@@ -19,12 +20,9 @@ namespace ProjetoTesteIara.Infrastructure.Repositories
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
-        public async Task<IList<CotacaoItemEntity>> SelectAll()
-        {
-            return null;
-        }
+        public async Task<IList<CotacaoItemEntity>> SelectAll() => await _dbContext.CotacaoItem.ToListAsync();
 
-        public async Task<CotacaoItemEntity> Select(int id) => _dbContext.Set<CotacaoItemEntity>().FirstOrDefault(e => e.NumeroCotacaoItem == id);
+        public async Task<CotacaoItemEntity> Select(int id) => await _dbContext.CotacaoItem.FirstOrDefaultAsync(e => e.NumeroCotacaoItem == id);
 
         public async Task<int> Insert(CotacaoItemEntity cotacaoItemEntity)
         {
