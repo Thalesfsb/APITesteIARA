@@ -13,20 +13,18 @@ namespace ProjetoTesteIara.Infrastructure.Repositories
         private readonly DbContextCotacao _dbContext;
         public Repository(DbContextCotacao dbContext) => _dbContext = dbContext;
 
-        public async Task<int> Insert(TEntity entity)
+        public async Task<int> Insert(IList<TEntity> entity)
         {
-            _dbContext.Add(entity);
+            _dbContext.AddRange(entity);
             return await _dbContext.SaveChangesAsync();
         }
-
-        public async Task<TEntity> Select(int id) => await _dbContext.FindAsync<TEntity>(id);
 
         public async Task<TEntity> Update(TEntity entity)
         {
             var cotacaoUpd = _dbContext.Update(entity);
             await _dbContext.SaveChangesAsync();
 
-            return cotacaoUpd.Entity;
+            return null;
         }
     }
 }

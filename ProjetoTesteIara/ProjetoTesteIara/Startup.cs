@@ -48,8 +48,8 @@ namespace ProjetoTesteIara
                 config.CreateMap<CotacaoItemModel, CotacaoItemEntity>();
                 config.CreateMap<CotacaoEntity, CotacaoModel>();
                 config.CreateMap<CotacaoItemEntity, CotacaoItemModel>();
-                config.CreateMap<CotacaoUpdateModel, CotacaoEntity>();
-                config.CreateMap<CotacaoItemUpdModel, CotacaoItemEntity>();
+                config.CreateMap<CotacaoModel2, CotacaoEntity>();
+                config.CreateMap<CotacaoItemModel2, CotacaoItemEntity>();
             });
 
             IMapper _mapper = mapper.CreateMapper();

@@ -9,7 +9,9 @@ namespace ProjetoTesteIara.Domain.Interfaces.Repositories
 {
     public interface ICotacaoItemRepository : IRepository<CotacaoItemEntity>
     {
+        Task<CotacaoItemEntity> Select(int id);
         Task<IList<CotacaoItemEntity>> SelectAll();
+        Task<int> Insert(CotacaoItemEntity cotacaoItemEntity);
         Task<bool> Delete(int id);
     }
 }

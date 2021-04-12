@@ -15,15 +15,21 @@ namespace ProjetoTesteIara.Controllers
     [Route("[controller]")]
     public class CotacaoItemController : ControllerBase
     {
+        #region Global Variaveis
+
         private readonly ICotacaoItemRepository _cotacaoItemRepository;
+        private readonly ICotacaoRepository _cotacaoRepository;
         private readonly IMapper _mapper;
         private CotacaoItemEntity cotacaoItemEntity = null;
-        private List<CotacaoItemEntity> cotacaoItemEntities = null;
+        private IList<CotacaoItemEntity> cotacaoItemEntities = null;
 
-        public CotacaoItemController(IMapper mapper, ICotacaoItemRepository cotacaoItemRepository)
+        #endregion
+
+        public CotacaoItemController(IMapper mapper, ICotacaoItemRepository cotacaoItemRepository, ICotacaoRepository cotacaoRepository)
         {
             _mapper = mapper;
             _cotacaoItemRepository = cotacaoItemRepository;
+            _cotacaoRepository = cotacaoRepository;
         }
 
         [HttpGet("SelectAll")]
@@ -67,19 +73,24 @@ namespace ProjetoTesteIara.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(CotacaoItemModel cotacaoItemModel)
+        public async Task<IActionResult> Create(CotacaoItemModel2 cotacaoItem)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest();
 
-                if (cotacaoItemModel.NumeroCotacao == 0)
+                if (cotacaoItem.NumeroCotacao == 0)
                     return BadRequest();
 
                 cotacaoItemEntity = new CotacaoItemEntity();
 
-                return Ok(await _cotacaoItemRepository.Insert(_mapper.Map(cotacaoItemModel, cotacaoItemEntity)));
+                var cotacao = await _cotacaoRepository.SelectCotacao(cotacaoItem.NumeroCotacao);
+
+                if (cotacao == null)
+                    return BadRequest();
+
+                return Ok(await _cotacaoItemRepository.Insert(_mapper.Map(cotacaoItem, cotacaoItemEntity)));
 
             }
             catch (Exception ex)
@@ -90,22 +101,22 @@ namespace ProjetoTesteIara.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> Update(CotacaoItemUpdModel cotacaoItemUpdModel)
+        public async Task<IActionResult> Update(CotacaoItemModel2 cotacaoItem)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest();
 
-                if (cotacaoItemUpdModel.NumeroCotacaoItem == 0)
+                if (cotacaoItem.NumeroCotacaoItem == 0)
                     return BadRequest();
 
-                var cotacaoEntity = await _cotacaoItemRepository.Select(cotacaoItemUpdModel.NumeroCotacaoItem);
+                var cotacaoEntity = await _cotacaoItemRepository.Select(cotacaoItem.NumeroCotacaoItem);
 
                 if (cotacaoEntity == null)
                     return StatusCode(404);
 
-                _mapper.Map(cotacaoItemUpdModel, cotacaoEntity);
+                _mapper.Map(cotacaoItem, cotacaoEntity);
 
                 return Ok(await _cotacaoItemRepository.Update(cotacaoEntity));
             }

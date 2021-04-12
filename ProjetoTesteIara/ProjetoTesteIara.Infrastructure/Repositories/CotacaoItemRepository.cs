@@ -15,14 +15,21 @@ namespace ProjetoTesteIara.Infrastructure.Repositories
         public CotacaoItemRepository(DbContextCotacao dbContext) : base(dbContext) => _dbContext = dbContext;
         public async Task<bool> Delete(int id)
         {
-            var cotacaoItem = _dbContext.Cotacao.FirstOrDefault(e => e.NumeroCotacao == id);
-            _dbContext.Remove(cotacaoItem);
+            _dbContext.Remove(_dbContext.CotacaoItem.FirstOrDefault(e => e.NumeroCotacaoItem == id));
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
         public async Task<IList<CotacaoItemEntity>> SelectAll()
         {
             return null;
+        }
+
+        public async Task<CotacaoItemEntity> Select(int id) => _dbContext.Set<CotacaoItemEntity>().FirstOrDefault(e => e.NumeroCotacaoItem == id);
+
+        public async Task<int> Insert(CotacaoItemEntity cotacaoItemEntity)
+        {
+            _dbContext.Add(cotacaoItemEntity);
+            return await _dbContext.SaveChangesAsync();
         }
     }
 }

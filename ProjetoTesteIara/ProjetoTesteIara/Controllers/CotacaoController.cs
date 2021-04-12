@@ -17,10 +17,15 @@ namespace ProjetoTesteIara.Controllers
     [Route("[controller]")]
     public class CotacaoController : ControllerBase
     {
+        #region Global Variaveis
+
         private readonly ICotacaoRepository _cotacaoRepository;
         private readonly IMapper _mapper;
-        private CotacaoEntity cotacaoEntity = null;
-        private List<CotacaoEntity> cotacaoEntities = null;
+        private IList<CotacaoEntity> cotacaoEntity = null;
+        private IList<CotacaoEntity> cotacaoEntities = null;
+
+        #endregion
+
         public CotacaoController(IMapper mapper, ICotacaoRepository cotacaoRepository)
         {
             _mapper = mapper;
@@ -52,13 +57,14 @@ namespace ProjetoTesteIara.Controllers
         {
             try
             {
-                cotacaoEntity = new CotacaoEntity();
+                IList<CotacaoModel> cotacaoModel = new List<CotacaoModel>();
+                cotacaoEntity = new List<CotacaoEntity>();
                 cotacaoEntity = await _cotacaoRepository.Select(id);
 
                 if (cotacaoEntity == null)
                     return StatusCode(404);
                 else
-                    return Ok(_mapper.Map<CotacaoModel>(cotacaoEntity));
+                    return Ok(_mapper.Map(cotacaoEntity, cotacaoModel));
             }
             catch (Exception ex)
             {
@@ -67,14 +73,49 @@ namespace ProjetoTesteIara.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] CotacaoModel cotacaoModel)
+        public async Task<IActionResult> Create([FromBody] List<CotacaoModel> cotacaoModel)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest();
 
-                cotacaoEntity = new CotacaoEntity();
+                cotacaoEntity = new List<CotacaoEntity>();
+
+                foreach (var item in cotacaoModel)
+                {
+                    if (item.Logradouro == "" && item.Bairro == "" && item.UF == "")
+                    {
+                        ViaCepResponseModel viaCepResponse = new ViaCepResponseModel();
+                        ViaCepResponseModel endereco = await viaCepResponse.ViaCepResponse(item.CEP);
+
+                        if (endereco == null)
+                            return StatusCode(404);
+
+                        item.Logradouro = endereco.Logradouro;
+                        item.Bairro = endereco.Bairro;
+                        item.UF = endereco.Uf;
+                    }
+                }
+
+                return Ok(await _cotacaoRepository.Insert(_mapper.Map(cotacaoModel, cotacaoEntity)));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update([FromBody] CotacaoModel2 cotacaoModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest();
+
+                if (cotacaoModel.NumeroCotacao == 0)
+                    return BadRequest();
 
                 if (cotacaoModel.Logradouro == "" && cotacaoModel.Bairro == "" && cotacaoModel.UF == "")
                 {
@@ -89,46 +130,12 @@ namespace ProjetoTesteIara.Controllers
                     cotacaoModel.UF = endereco.Uf;
                 }
 
-                _mapper.Map(cotacaoModel, cotacaoEntity);
-                return Ok(await _cotacaoRepository.Insert(cotacaoEntity));
-
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
-        }
-
-        [HttpPut("Update")]
-        public async Task<IActionResult> Update([FromBody] CotacaoUpdateModel cotacaoUpdateModel)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest();
-
-                if (cotacaoUpdateModel.NumeroCotacao == 0)
-                    return BadRequest();
-
-                if (cotacaoUpdateModel.Logradouro == "" && cotacaoUpdateModel.Bairro == "" && cotacaoUpdateModel.UF == "")
-                {
-                    ViaCepResponseModel viaCepResponse = new ViaCepResponseModel();
-                    ViaCepResponseModel endereco = await viaCepResponse.ViaCepResponse(cotacaoUpdateModel.CEP);
-
-                    if (endereco == null)
-                        return StatusCode(404);
-
-                    cotacaoUpdateModel.Logradouro = endereco.Logradouro;
-                    cotacaoUpdateModel.Bairro = endereco.Bairro;
-                    cotacaoUpdateModel.UF = endereco.Uf;
-                }
-
-                var cotacaoEntity = await _cotacaoRepository.Select(cotacaoUpdateModel.NumeroCotacao);
+                var cotacaoEntity = await _cotacaoRepository.SelectCotacao(cotacaoModel.NumeroCotacao);
 
                 if (cotacaoEntity == null)
                     return StatusCode(404);
 
-                _mapper.Map(cotacaoUpdateModel, cotacaoEntity);
+                _mapper.Map(cotacaoModel, cotacaoEntity);
 
                 return Ok(await _cotacaoRepository.Update(cotacaoEntity));
             }
