@@ -17,7 +17,6 @@ namespace ProjetoTesteIara.Infrastructure.Repositories
         public async Task<bool> Delete(int id)
         {
             _dbContext.Remove(_dbContext.CotacaoItem.FirstOrDefault(e => e.NumeroCotacaoItem == id));
-
             return await _dbContext.SaveChangesAsync() > 0;
         }
         public async Task<IList<CotacaoItemEntity>> SelectAll() => await _dbContext.CotacaoItem.ToListAsync();

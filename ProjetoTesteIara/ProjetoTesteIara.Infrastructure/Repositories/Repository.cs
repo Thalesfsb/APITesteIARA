@@ -19,12 +19,10 @@ namespace ProjetoTesteIara.Infrastructure.Repositories
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<TEntity> Update(TEntity entity)
+        public async Task<int> Update(TEntity entity)
         {
-            var cotacaoUpd = _dbContext.Update(entity);
-            await _dbContext.SaveChangesAsync();
-
-            return null;
+            _dbContext.Update(entity);
+            return await _dbContext.SaveChangesAsync();
         }
     }
 }

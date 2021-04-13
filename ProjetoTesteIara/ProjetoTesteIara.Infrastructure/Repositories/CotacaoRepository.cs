@@ -18,7 +18,6 @@ namespace ProjetoTesteIara.Infrastructure.Repositories
         public async Task<bool> Delete(int id)
         {
             _dbContext.Remove(_dbContext.Cotacao.Where(e => e.NumeroCotacao == id).Include(e => e.CotacaoItems).FirstOrDefault());
-
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
@@ -29,10 +28,7 @@ namespace ProjetoTesteIara.Infrastructure.Repositories
 
         public async Task<IList<CotacaoEntity>> SelectAll() => await _dbContext.Cotacao.Include(e => e.CotacaoItems).ToListAsync();
 
-        public async Task<CotacaoEntity> SelectCotacao(int id)
-        {
-            return await _dbContext.Cotacao.FirstOrDefaultAsync(e => e.NumeroCotacao == id);
-        }
+        public async Task<CotacaoEntity> SelectCotacao(int id) => await _dbContext.Cotacao.FirstOrDefaultAsync(e => e.NumeroCotacao == id);
 
         public async Task<int> Insert(List<CotacaoEntity> cotacaoItemEntity)
         {
