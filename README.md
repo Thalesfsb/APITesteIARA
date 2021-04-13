@@ -3,7 +3,7 @@
 Tecnologias e Frameworks utilizados para desenolver a API 
   > C#,
   > SQL Server 2019,
-  > .NET Core WebApi 5.0,
+  > .NET 5.0 WebApi,
   > Entity FrameworkCore 5.0.5,
   > Entity FrameworkCore Relatioal 5.0.5,
   > Entity FrameworkCore SqlServer 5.0.5,
