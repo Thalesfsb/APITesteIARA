@@ -41,7 +41,7 @@ namespace ProjetoTesteIara.Controllers
                 cotacaoEntities = new List<CotacaoEntity>();
                 cotacaoEntities = (List<CotacaoEntity>)await _cotacaoRepository.SelectAll();
 
-                if (cotacaoEntities == null)
+                if (cotacaoEntities == null || cotacaoEntities.Count == 0)
                     return StatusCode(404);
                 else
                     return Ok(_mapper.Map<List<CotacaoModel>>(cotacaoEntities));
